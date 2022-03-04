@@ -1,5 +1,4 @@
 import React, {Fragment} from "react";
-import classNames from "../../../node_modules/classnames";
 
 import "./styles.scss";
 import Header from "./Header";
@@ -9,10 +8,9 @@ import Empty from "./Empty"
 export default function Appointment(props) {
 
   return (
-    <Fragment>
+    <Fragment className="appointment">
       <Header time={props.time}/>
       {props.interview ? <Show student={props.interview.student} interviewer={props.interview.interviewer} /> : <Empty /> }
     </Fragment>
   )
-
 }
