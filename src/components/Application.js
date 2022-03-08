@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"
 
 import "components/Application.scss";
 import DayList from "./DayList"
 import Appointment from "./Appointment"
 
-const days = [
+/*const days = [
   {
     id: 1,
     name: "Monday",
@@ -21,6 +22,7 @@ const days = [
     spots: 0,
   },
 ];
+*/
 
 const appointments = {
   "1": {
@@ -64,6 +66,14 @@ const appointments = {
 export default function Application(props) {
 
   const [day, setDay] = useState("Monday");
+  const [days, setDays] = useState([]);
+  // populate days on initial load by querying scheduler API
+  useEffect(() => {
+    axios.get("api/days").then((response) => {
+      console.log(response.data);
+      setDays(response.data);
+    })
+  }, [])
   // turn appointments object into array
   const allAppointments = Object.values(appointments).map(appointment => {
     return (
