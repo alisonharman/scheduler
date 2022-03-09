@@ -26,5 +26,25 @@ export function getAppointmentsForDay(state, day) {
     }
   }
   return appointments;
+}
 
+export function getInterview(state, interview) {
+  
+  // if no interview, then return null
+  if (!interview) {
+    return null;
+  }
+  // need to return a nested object with keys of student and interviewer
+  // get id of interviewer directly from appointment.interview object
+  const id = interview.interviewer;
+  //create nested object
+  let object = {
+    student: interview.student,
+    interviewer: {
+      id: id,
+      name: state.interviewers[id].name,
+      avatar: state.interviewers[id].avatar
+    } 
+  }
+  return object;
 }
