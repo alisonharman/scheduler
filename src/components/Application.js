@@ -4,87 +4,35 @@ import axios from "axios"
 import "components/Application.scss";
 import DayList from "./DayList"
 import Appointment from "./Appointment"
-
-/*const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
-*/
-
-const appointments = {
-  "1": {
-    id: 1,
-    time: "12pm",
-  },
-  "2": {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 3,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  "3": {
-    id: 3,
-    time: "2pm",
-  },
-  "4": {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Archie Andrews",
-      interviewer: {
-        id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
-      }
-    }
-  },
-  "5": {
-    id: 5,
-    time: "4pm",
-  }
-};
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function Application(props) {
 
-  const [state, setState] = useState ({
+  const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {}
   })
 
+  let dailyAppointments = [];
+
   const setDay = day => setState({ ...state, day });
-  //const setDays = days => setState({ ...state, days });
-  const setDays = days => setState(prev => ({ ...prev, days }));;
-  // populate days on initial load by querying scheduler API
+
   useEffect(() => {
-    axios.get("api/days").then((response) => {
-      console.log(response.data);
-      setDays(response.data);
+    Promise.all([
+      Promise.resolve(axios.get("api/days")),
+      Promise.resolve(axios.get("api/appointments"))
+    ]).then((all) => {
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data }))
     })
   }, [])
+
+  dailyAppointments = getAppointmentsForDay(state, state.day);
+
   // turn appointments object into array
-  const allAppointments = Object.values(appointments).map(appointment => {
+  const allAppointments = dailyAppointments.map(appointment => {
     return (
-      <Appointment key={appointment.id} {...appointment}/>
+      <Appointment key={appointment.id} {...appointment} />
     )
   })
 
