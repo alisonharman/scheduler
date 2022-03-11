@@ -48,3 +48,35 @@ export function getInterview(state, interview) {
   }
   return object;
 }
+
+export function getInterviewersForDay(state, day) {
+  //... returns an array of interviewers available for that day
+  // first, need to relate day like "Monday" to id "1", for example
+  const findIDArrayBasedOnDayName = (day) => {
+    for (const element of state.days) {
+      if (element.name === day) {
+        return element.interviewers
+      }
+    }
+  }
+  // assign to local variable
+  const interviewersArray = findIDArrayBasedOnDayName(day);
+  // appointments array will be the returned value 
+  const interviews = [];
+  // if no appointments in appointmentArray
+  if (! interviewersArray) {
+    return interviews;
+  }
+// iterate through appointments and push each object into a new array
+  for (const interview of interviewersArray) {
+    const id = interview
+    for (const property in state.interviewers) {
+        if (property == id) {
+          interviews.push(state.interviewers[property])
+        }
+    }
+  }
+  console.log("DAY", day)
+  console.log("INTERVIEWS" , interviews)
+  return interviews;
+}
