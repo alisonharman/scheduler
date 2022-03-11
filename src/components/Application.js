@@ -31,14 +31,28 @@ export default function Application(props) {
   }, [])
 
   function bookInterview(id, interview) {
-    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: {...interview}
+    }
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({  
+      ...state,
+      appointments}
+   );
   }
+
 // transform appointment data into an array 
   dailyAppointments = getAppointmentsForDay(state, state.day);
   // transform interviewers data into an array
   dailyInterviewers = getInterviewersForDay(state, state.day)
   // turn appointments object into array of appointment objects
   const allAppointments = dailyAppointments.map(appointment => {
+    //console.log("interview passed to getInterview ", appointment.interview)
+    //console.log(appointment)
     const interview = getInterview(state, appointment.interview)
     return (
       <Appointment 
