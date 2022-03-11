@@ -13,6 +13,14 @@ const CREATE = "CREATE";
 
 export default function Appointment(props) {
 
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    }
+    props.bookInterview(props.id, interview)
+  }
+
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -29,8 +37,9 @@ export default function Appointment(props) {
       )}
       {mode === CREATE && (
       <Form 
-        interviewers={[]}
+        interviewers={props.interviewers}
         onCancel = {() => back() }
+        onSave = {() => save("Alison", "Heather")}
       />)}
     </Fragment>
   )
