@@ -5,22 +5,32 @@ import Header from "./Header";
 import Show from "./Show"
 import Empty from "./Empty"
 import Form from "./Form"
+import Status from "./Status";
 import useVisualMode from "hooks/useVisualMode";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
+const SAVING = "SAVING"
 
 export default function Appointment(props) {
 
   function save(name, interviewer) {
     //console.log('INTERVIEWER', interviewer[0].id);
+    transition(SAVING)
     const interview = {
       student: name,
       interviewer: interviewer[0].id
     }
-    props.bookInterview(props.id.toString(), interview)
-    transition(SHOW)
+  
+    setTimeout(() => {
+      props.bookInterview(props.id.toString(), interview)
+      transition(SHOW)
+    }, 1000)
+
+    // below doesn't work to show saving form...
+   // props.bookInterview(props.id.toString(), interview)
+   // .finally(transition(SHOW))
   }
 
   const { mode, transition, back } = useVisualMode(
@@ -43,6 +53,7 @@ export default function Appointment(props) {
         onCancel = {() => back() }
         onSave = {save}
       />)}
+      {mode === SAVING && <Status message="Saving..."/>}
     </Fragment>
   )
 }
