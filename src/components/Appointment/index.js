@@ -12,11 +12,11 @@ const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING"
+const DELETE = "DELETING"
 
 export default function Appointment(props) {
 
   function save(name, interviewer) {
-
     const interview = {
       student: name,
       interviewer: interviewer[0].id
@@ -34,6 +34,10 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  function deleteInterview(appointmentID) {
+      props.cancelInterview(appointmentID);
+  }
+
   return (
     <Fragment >
       <Header time={props.time} />
@@ -42,6 +46,8 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={deleteInterview}
+          id={props.id}
         />
       )}
       {mode === CREATE && (
@@ -51,6 +57,7 @@ export default function Appointment(props) {
           onSave={save}
         />)}
       {mode === SAVING && <Status message="Saving..." />}
+      {mode === DELETE && <Status message="Deleting..." /> }
     </Fragment>
   )
 }
