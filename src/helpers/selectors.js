@@ -29,7 +29,6 @@ export function getAppointmentsForDay(state, day) {
 }
 
 export function getInterview(state, interview) {
-  
   // if no interview, then return null
   if (!interview) {
     return null;
@@ -37,6 +36,7 @@ export function getInterview(state, interview) {
   // need to return a nested object with keys of student and interviewer
   // get id of interviewer directly from appointment.interview object
   const id = interview.interviewer;
+  
   //create nested object
   let object = {
     student: interview.student,
@@ -64,7 +64,7 @@ export function getInterviewersForDay(state, day) {
   // appointments array will be the returned value 
   const interviews = [];
   // if no appointments in appointmentArray
-  if (! interviewersArray) {
+  if (!interviewersArray) {
     return interviews;
   }
 // iterate through appointments and push each object into a new array
@@ -76,7 +76,5 @@ export function getInterviewersForDay(state, day) {
         }
     }
   }
-  console.log("DAY", day)
-  console.log("INTERVIEWS" , interviews)
   return interviews;
 }
