@@ -7,12 +7,14 @@ import Empty from "./Empty"
 import Form from "./Form"
 import Status from "./Status";
 import useVisualMode from "hooks/useVisualMode";
+import Confirm from "./Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING"
 const DELETE = "DELETING"
+const CONFIRM ="CONFIRM"
 
 export default function Appointment(props) {
 
@@ -35,7 +37,16 @@ export default function Appointment(props) {
   );
 
   function deleteInterview(appointmentID) {
-      props.cancelInterview(appointmentID);
+
+      transition(CONFIRM)
+
+      transition(DELETE)
+
+      props
+      .cancelInterview(appointmentID)
+      .then(() => transition(EMPTY))
+      .catch(error => console.log(error));
+
   }
 
   return (
@@ -58,6 +69,7 @@ export default function Appointment(props) {
         />)}
       {mode === SAVING && <Status message="Saving..." />}
       {mode === DELETE && <Status message="Deleting..." /> }
+      {mode === CONFIRM && <Confirm/> }
     </Fragment>
   )
 }

@@ -49,9 +49,33 @@ export default function Application(props) {
     ])
   }
 
-  function cancelInterview(appointmentId) {
+  function cancelInterview(id) {
     console.log("I am in cancelInterview on Application")
-    console.log("ID", appointmentId)
+    console.log("ID", id)
+    // need to set interview object to null based on appointment ID
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    setState({
+      ...state,
+      appointments
+     })
+
+     return Promise.all([
+      Promise.resolve(axios.delete(`http://localhost:8001/api/appointments/${id}`, {interview: null})),
+      Promise.resolve( setState({
+        ...state,
+        appointments
+       }))
+    ])
+    
+
   }
 
   // transform appointment data into an array 
