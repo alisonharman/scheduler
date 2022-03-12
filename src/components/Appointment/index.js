@@ -16,21 +16,18 @@ const SAVING = "SAVING"
 export default function Appointment(props) {
 
   function save(name, interviewer) {
-    //console.log('INTERVIEWER', interviewer[0].id);
-    transition(SAVING)
+
     const interview = {
       student: name,
       interviewer: interviewer[0].id
     }
-  
-    setTimeout(() => {
-      props.bookInterview(props.id.toString(), interview)
-      transition(SHOW)
-    }, 1000)
 
-    // below doesn't work to show saving form...
-   // props.bookInterview(props.id.toString(), interview)
-   // .finally(transition(SHOW))
+    transition(SAVING)
+
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => console.log(error));
   }
 
   const { mode, transition, back } = useVisualMode(
@@ -48,12 +45,12 @@ export default function Appointment(props) {
         />
       )}
       {mode === CREATE && (
-      <Form 
-        interviewers={props.interviewers}
-        onCancel = {() => back() }
-        onSave = {save}
-      />)}
-      {mode === SAVING && <Status message="Saving..."/>}
+        <Form
+          interviewers={props.interviewers}
+          onCancel={() => back()}
+          onSave={save}
+        />)}
+      {mode === SAVING && <Status message="Saving..." />}
     </Fragment>
   )
 }
