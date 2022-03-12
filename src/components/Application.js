@@ -47,11 +47,9 @@ export default function Application(props) {
         appointments
        }))
     ])
-  }
+  };
 
   function cancelInterview(id) {
-    console.log("I am in cancelInterview on Application")
-    console.log("ID", id)
     // need to set interview object to null based on appointment ID
     const appointment = {
       ...state.appointments[id],
@@ -74,9 +72,7 @@ export default function Application(props) {
         appointments
        }))
     ])
-    
-
-  }
+  };
 
   // transform appointment data into an array 
   dailyAppointments = getAppointmentsForDay(state, state.day);

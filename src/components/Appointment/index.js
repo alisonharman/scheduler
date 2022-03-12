@@ -14,7 +14,7 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING"
 const DELETE = "DELETING"
-const CONFIRM ="CONFIRM"
+const CONFIRM = "CONFIRM"
 
 export default function Appointment(props) {
 
@@ -36,17 +36,14 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-  function deleteInterview(appointmentID) {
+  function deleteInterview() {
 
-      transition(CONFIRM)
+    transition(DELETE)
 
-      transition(DELETE)
-
-      props
-      .cancelInterview(appointmentID)
+    props
+      .cancelInterview(props.id)
       .then(() => transition(EMPTY))
       .catch(error => console.log(error));
-
   }
 
   return (
@@ -57,7 +54,7 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onDelete={deleteInterview}
+          onDelete={() => transition(CONFIRM)}
           id={props.id}
         />
       )}
@@ -68,8 +65,12 @@ export default function Appointment(props) {
           onSave={save}
         />)}
       {mode === SAVING && <Status message="Saving..." />}
-      {mode === DELETE && <Status message="Deleting..." /> }
-      {mode === CONFIRM && <Confirm/> }
+      {mode === DELETE && <Status message="Deleting..." />}
+      {mode === CONFIRM && <Confirm
+        message="Are you sure you would like to delete?"
+        onCancel={() => back()}
+        onConfirm={() => deleteInterview()}
+      />}
     </Fragment>
   )
 }
