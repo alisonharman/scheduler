@@ -49,14 +49,17 @@ export default function Application(props) {
     ])
   }
 
+  function cancelInterview(appointmentId) {
+    console.log("I am in cancelInterview on Application")
+    console.log("ID", appointmentId)
+  }
+
   // transform appointment data into an array 
   dailyAppointments = getAppointmentsForDay(state, state.day);
   // transform interviewers data into an array
   dailyInterviewers = getInterviewersForDay(state, state.day)
   // turn appointments object into array of appointment objects
   const allAppointments = dailyAppointments.map(appointment => {
-    //console.log("interview passed to getInterview ", appointment.interview)
-    //console.log(appointment)
     const interview = getInterview(state, appointment.interview)
     return (
       <Appointment
@@ -66,6 +69,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     )
   })
