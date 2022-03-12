@@ -39,28 +39,16 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    /*
-    setState({
-      ...state,
-      appointments
-    }
-    );
-*/
-    //axios.put(`/api/appointments/${id}`, interview
-    //).then(response => console.log(response))
 
-    return new Promise((resolve, reject) => {
-     axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})
-     .then(
-       setState({
+    return Promise.all([
+      Promise.resolve(axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})),
+      Promise.resolve( setState({
         ...state,
         appointments
-       })
-    )
-     .catch(error =>  console.log(error))
-    });
-
+       }))
+    ])
   }
+
   // transform appointment data into an array 
   dailyAppointments = getAppointmentsForDay(state, state.day);
   // transform interviewers data into an array
