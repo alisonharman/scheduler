@@ -40,6 +40,15 @@ export default function Application(props) {
       [id]: appointment
     };
 
+    const request = axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})
+
+    return request
+    .then(result => {setState({
+      ...state,
+      appointments
+     }) });
+
+     // the below leaves an uncatched error?
     return Promise.all([
       Promise.resolve(axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})),
       Promise.resolve( setState({
@@ -47,6 +56,7 @@ export default function Application(props) {
         appointments
        }))
     ])
+
   };
 
   function cancelInterview(id) {
@@ -59,12 +69,7 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-
-    setState({
-      ...state,
-      appointments
-     })
-
+/*
      return Promise.all([
       Promise.resolve(axios.delete(`http://localhost:8001/api/appointments/${id}`, {interview: null})),
       Promise.resolve( setState({
@@ -72,6 +77,16 @@ export default function Application(props) {
         appointments
        }))
     ])
+    */
+
+    const request = axios.delete(`http://localhost:8001/api/appointments/${id}`, {interview: null})
+
+    return request
+    .then(result => {setState({
+      ...state,
+      appointments
+     }) });
+
   };
 
   // transform appointment data into an array 
