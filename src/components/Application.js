@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"
-
+import React from "react";
 import "components/Application.scss";
 import DayList from "./DayList"
 import Appointment from "./Appointment"
@@ -40,7 +38,6 @@ export default function Application(props) {
   return (
     <main className="layout">
       <section className="sidebar">
-        {/* Replace this with the sidebar elements during the "Project Setup & Familiarity" activity. */}
         <img
           className="sidebar--centered"
           src="images/logo.png"
