@@ -31,24 +31,27 @@ export default function useVisualMode(initial) {
       ...state.appointments,
       [id]: appointment
     };
+    const days = updateSpots(true)
 
-    const request = axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})
+    const request = axios.put(`http://localhost:8001/api/appointments/${id}`, { interview: interview })
 
     return request
-    .then(result => {setState({
-      ...state,
-      appointments
-     }) });
-
-     // the below leaves an uncatched error?
+      .then(() => {
+        setState(prev => ({
+          ...prev,
+          appointments, days
+        }))
+      });
+/*
+    // the below leaves an uncatched error?
     return Promise.all([
-      Promise.resolve(axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})),
-      Promise.resolve( setState({
+      Promise.resolve(axios.put(`http://localhost:8001/api/appointments/${id}`, { interview: interview })),
+      Promise.resolve(setState({
         ...state,
         appointments
-       }))
+      }))
     ])
-
+*/
   };
 
   function cancelInterview(id) {
@@ -61,26 +64,47 @@ export default function useVisualMode(initial) {
       ...state.appointments,
       [id]: appointment
     };
-/*
-     return Promise.all([
-      Promise.resolve(axios.delete(`http://localhost:8001/api/appointments/${id}`, {interview: null})),
-      Promise.resolve( setState({
-        ...state,
-        appointments
-       }))
-    ])
-    */
+    const days = updateSpots()
+   
 
-    const request = axios.delete(`http://localhost:8001/api/appointments/${id}`, {interview: null})
+    const request = axios.delete(`http://localhost:8001/api/appointments/${id}`, { interview: null })
 
     return request
-    .then(result => {setState({
-      ...state,
-      appointments
-     }) });
-
+      .then(result => {
+        setState({
+          ...state,
+          appointments, days
+        })
+      });
   };
 
-  return {state, setDay, bookInterview, cancelInterview}
+  function updateSpots(interviewAdded=false) {
+    // need to find the index of days array whose "spots" needs to be updated
+    // have day of Week (e.g. "Monday") from state
+    let dayIndex = 0;
+    for (const day of state.days) {
+      if (state.day === day.name) {
+        dayIndex = day.id-1
+      }
+    }
+    // deep copy of day object
+    const day = {...state.days[dayIndex]}
+    
+    // if adding an interview like in bookInterview, then number of spots decreases by one
+    if (interviewAdded) {
+      day.spots -= 1
+    }
+    else {
+      day.spots += 1
+    }
+
+    // build a new days array of state object by replacing the day with correct number of spots
+    let days = [...state.days];
+    days.splice(dayIndex, 1, day)
+    return days;
+  };
+  
+
+  return { state, setDay, bookInterview, cancelInterview }
 
 }
