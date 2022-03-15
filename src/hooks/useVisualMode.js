@@ -8,20 +8,12 @@ export default function useVisualMode(initial) {
 
   function transition(mode, replace = false) {
     setMode(mode);
-    //const newHistory = [...history];
     if (replace) {
-      //newHistory.pop();
       setHistory(prev => ([...prev.slice(0, -1), mode]))
-      console.log('in replace', history)
     }
     else {
       setHistory(prev => ([...prev, mode]))
-      console.log('history', history)
     }
-    //console.log('HISTORY', history)
-    //newHistory.push(mode);
-    //setHistory(newHistory);
-    //setHistory(prev => ([...prev, ]))
   }
 
   function back() {
