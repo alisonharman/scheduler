@@ -20,7 +20,7 @@ export function getAppointmentsForDay(state, day) {
   for (const appointment of appointmentArray) {
     const id = appointment
     for (const property in state.appointments) {
-        if (property == id) {
+        if (property === id.toString()) {
           appointments.push(state.appointments[property])
         }
     }
@@ -71,7 +71,7 @@ export function getInterviewersForDay(state, day) {
   for (const interview of interviewersArray) {
     const id = interview
     for (const property in state.interviewers) {
-        if (property == id) {
+        if (property === id.toString()) {
           interviews.push(state.interviewers[property])
         }
     }
