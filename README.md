@@ -1,7 +1,6 @@
 # Interview Scheduler
 
-Interview Schedule is a Create React app which allows a student to create, edit, and delete interview appointments with mentors. It calls the scheduler-api to edit, create and delete appointments and is available [here](https://github.com/lighthouse-labs/scheduler-api).
-
+Scheduler is a Create React app which allows a student to book, edit, and delete interview appointments with mentors. In this single-page application, appointments can be between the hours of 12 PM and 5 PM, Monday to Friday. Each appointment has one student and one interviewer. When creating a new appointment, the user can enter any student name while the interviewer is chosen from a predefined list. The user can save the appointment and view the entire schedule of appointments on any day of the week. Appointments can also be edited or deleted. The front end of this project is built with React and makes requests to an API to fetch and store appointment data from a database.
 
 ## Screenshots
 
