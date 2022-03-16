@@ -39,5 +39,4 @@ npm run storybook
 
 ```sh
 - Node v10.16.1
-- Create React App
 ```
