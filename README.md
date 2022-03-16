@@ -38,5 +38,8 @@ npm run storybook
 ## Dependencies
 
 ```sh
-- Node v10.16.1
+- Node v12.22.7
+- axios 0.26.0
+- react 16.9.0
+- classNames 2.2.6
 ```
