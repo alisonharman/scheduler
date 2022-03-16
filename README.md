@@ -5,7 +5,7 @@ Interview Schedule is a Create React app which allows a student to create, edit,
 
 ## Screenshots
 
-!["Screenshot of main page on desktop screen"](https://github.com/alisonharman/tweeter/blob/master/docs/desktop-main-page.png)
+!["Screenshot of main page on desktop screen"](https://github.com/alisonharman/scheduler/blob/master/docs/Scheduler_desktop.png)
 
 
 ## Getting Started
