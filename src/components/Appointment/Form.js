@@ -7,10 +7,12 @@ export default function Form(props) {
 
   const [student, setStudent] = useState(props.student || "")
   const [interviewer, setInterviewer] = useState(props.interviewer || null)
+  const [error, setError] = useState("");
 
   function reset() {
     setStudent("")
     setInterviewer(null)
+    setError("")
   };
 
   const cancel = () => {
@@ -18,20 +20,20 @@ export default function Form(props) {
     props.onCancel();
   }
 
-  function validFormData () {
+  function validate() {
     // remove with white space for testing: do not want a blank space as a name even if it does not cause an error
     let name = student.replace(/\s+/g, "");
-    if (!name) {
-      alert("Please enter a name.")
+    if (name === "") {
+      setError("Student name cannot be blank");
       return;
     }
-    // need to make sure an interviewer is selected, else there is an error
-    if (!interviewer) {
-      alert('Pleae select an interviewer')
+    if (interviewer == null) {
+      setError("Please choose an interviewer");
       return;
     }
+    setError("");
     return true;
- };
+  }
 
   return (
     <main className="appointment__card appointment__card--create">
@@ -44,8 +46,10 @@ export default function Form(props) {
             placeholder="Enter Student Name"
             value={student}
             onChange={(event) => setStudent(event.target.value)}
+            data-testid="student-name-input"
           />
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           onChange={setInterviewer}
@@ -56,9 +60,9 @@ export default function Form(props) {
         <section className="appointment__actions">
           <Button danger onClick={cancel} >Cancel</Button>
           <Button confirm onClick={() => {
-            if (validFormData()) {
-              props.onSave(student, interviewer)
-            }  
+            if (validate()) {
+              props.onSave(student, interviewer);
+            }
           }
           }>Save</Button>
         </section>
