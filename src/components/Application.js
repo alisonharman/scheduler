@@ -20,7 +20,8 @@ export default function Application(props) {
   const dailyInterviewers = getInterviewersForDay(state, state.day)
   // turn appointments object into array of appointment objects
   const allAppointments = dailyAppointments.map(appointment => {
-    const interview = getInterview(state, appointment.interview)
+
+    const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
         key={appointment.id}
@@ -33,7 +34,6 @@ export default function Application(props) {
       />
     )
   })
-
 
   return (
     <main className="layout">
