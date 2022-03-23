@@ -18,14 +18,20 @@ const DELETE = "DELETING"
 const CONFIRM = "CONFIRM"
 const EDIT = "EDIT"
 const ERROR_SAVE = "ERROR_SAVE"
-const ERROR_DELETE ="ERROR_DELETE"
+const ERROR_DELETE = "ERROR_DELETE"
 
 export default function Appointment(props) {
 
   function save(name, interviewer) {
-    const interview = {
-      student: name,
-      interviewer: interviewer
+    let interview;
+    if (!interviewer) {
+      interview = null;
+    }
+    else {
+      interview = {
+        student: name,
+        interviewer: interviewer
+      }
     }
 
     transition(SAVING)
@@ -84,14 +90,14 @@ export default function Appointment(props) {
           onCancel={() => back()}
           onSave={save}
         />)}
-        {mode === ERROR_SAVE && <Error 
-          message="Could not save appointment." 
-          onClose={() => back()}
-        />}
-        {mode === ERROR_DELETE && <Error 
-          message="Could not cancel appointment." 
-          onClose={() => back()}
-        />}
+      {mode === ERROR_SAVE && <Error
+        message="Could not save appointment."
+        onClose={() => back()}
+      />}
+      {mode === ERROR_DELETE && <Error
+        message="Could not cancel appointment."
+        onClose={() => back()}
+      />}
     </Fragment>
   )
 }
