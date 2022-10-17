@@ -57,7 +57,7 @@ export default function Appointment(props) {
   }
 
   return (
-    <Fragment >
+    <article data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty time={props.time} onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
@@ -98,6 +98,6 @@ export default function Appointment(props) {
         message="Could not cancel appointment."
         onClose={() => back()}
       />}
-    </Fragment>
+    </article>
   )
 }
