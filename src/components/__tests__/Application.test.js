@@ -25,11 +25,17 @@ describe("Application", () => {
     expect(getByText("Leopold Silvers")).toBeInTheDocument();
   });
 
-  it("render the Application without crashing, loads data", async () => {
+  it("render the Application without crashing, loads data, books an interview", async () => {
     const { container } = render(<Application/>);
 
     // wait until the text "Archie Cohen" is displayed
     await waitForElement(() => getByText(container, "Archie Cohen"))
+
+    // 3. click the "Add" button on the first empty appointment
+    const appointments = getAllByTestId(container, "appointment");
+    const appointment = appointments[0];
+    const addButton = getByAltText(appointment, "Add");
+    fireEvent.click(addButton);
 
   })
 });
