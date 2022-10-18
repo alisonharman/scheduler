@@ -52,6 +52,10 @@ describe("Application", () => {
     fireEvent.click(interviewer);
 
     // 6. Click the "Save" button on that same appointment.
-   
+    const saveButton = getByText(appointment, "Save");
+    fireEvent.click(saveButton);
+
+    // 7. Check that the element with the text "Saving" is displayed.
+    expect(getByText(appointment, "Saving...")).toBeInTheDocument();
   });
 });
