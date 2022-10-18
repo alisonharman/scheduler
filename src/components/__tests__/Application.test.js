@@ -9,6 +9,8 @@ import {
   getAllByTestId,
   getByAltText,
   getByPlaceholderText,
+  waitForElementToBeRemoved,
+  queryByText
 } from "@testing-library/react";
 import "../../__mocks__/axios";
 
@@ -57,5 +59,15 @@ describe("Application", () => {
 
     // 7. Check that the element with the text "Saving" is displayed.
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
+
+
+    // 8. Wait until the element with the text "Lydia Miller-Jones" is displayed.
+    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
+    expect(getByText(appointment, "Lydia Miller-Jones")).toBeInTheDocument();
+
+   // 9. Check that the DayListItem with the text "Monday" also has the text "no spots remaining".
+   const days = getAllByTestId(container, "day");
+   const day = days.find((day) => queryByText(day, "Monday"));
+   expect(getByText(day, /no spots remaining/i)).toBeInTheDocument();
   });
 });
