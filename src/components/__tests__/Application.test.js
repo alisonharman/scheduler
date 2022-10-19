@@ -10,8 +10,8 @@ import {
   getByAltText,
   getByPlaceholderText,
   waitForElementToBeRemoved,
-  queryByText, 
-  queryByAltText
+  queryByText,
+  queryByAltText,
 } from "@testing-library/react";
 import "../../__mocks__/axios";
 
@@ -61,15 +61,16 @@ describe("Application", () => {
     // 7. Check that the element with the text "Saving" is displayed.
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
 
-
     // 8. Wait until the element with the text "Lydia Miller-Jones" is displayed.
-    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
+    await waitForElementToBeRemoved(() =>
+      queryByText(appointment, "Saving...")
+    );
     expect(getByText(appointment, "Lydia Miller-Jones")).toBeInTheDocument();
 
-   // 9. Check that the DayListItem with the text "Monday" also has the text "no spots remaining".
-   const days = getAllByTestId(container, "day");
-   const day = days.find((day) => queryByText(day, "Monday"));
-   expect(getByText(day, /no spots remaining/i)).toBeInTheDocument();
+    // 9. Check that the DayListItem with the text "Monday" also has the text "no spots remaining".
+    const days = getAllByTestId(container, "day");
+    const day = days.find((day) => queryByText(day, "Monday"));
+    expect(getByText(day, /no spots remaining/i)).toBeInTheDocument();
   });
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
@@ -79,16 +80,21 @@ describe("Application", () => {
     // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
+    // 3 Click the delete button
 
-     // 3 Click the delete button
-
-     // first find the Show component
-     const appointment = getAllByTestId(container, "appointment").find(
+    // first find the Show component
+    const appointment = getAllByTestId(container, "appointment").find(
       (appointment) => queryByText(appointment, "Archie Cohen")
     );
-     // Click the Delete button on the Show component.
-     const deleteButton = queryByAltText(appointment, "Delete");
-     fireEvent.click(deleteButton);
-  });
+    // Click the Delete button on the Show component.
+    const deleteButton = queryByAltText(appointment, "Delete");
+    fireEvent.click(deleteButton);
 
+    // 4. Check that the Confirm component is shown.
+    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+
+    // 5. Click the "Confirm" button on the Confirm component.
+    const confirmButton = queryByText(appointment, "Confirm");
+    fireEvent.click(confirmButton);
+  });
 });
