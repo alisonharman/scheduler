@@ -96,5 +96,13 @@ describe("Application", () => {
     // 5. Click the "Confirm" button on the Confirm component.
     const confirmButton = queryByText(appointment, "Confirm");
     fireEvent.click(confirmButton);
+
+    // 6. Check that the Status component is displayed with the text "Deleting"
+    expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
+
+    // 7. Check that the Empty component (empty appointment element) is displayed
+    await waitForElementToBeRemoved(() => queryByText(appointment, "Deleting..."));
+    expect(getByAltText(appointment, "Add")).toBeInTheDocument();
+
   });
 });
