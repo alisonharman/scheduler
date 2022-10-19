@@ -10,7 +10,8 @@ import {
   getByAltText,
   getByPlaceholderText,
   waitForElementToBeRemoved,
-  queryByText
+  queryByText, 
+  queryByAltText
 } from "@testing-library/react";
 import "../../__mocks__/axios";
 
@@ -70,4 +71,24 @@ describe("Application", () => {
    const day = days.find((day) => queryByText(day, "Monday"));
    expect(getByText(day, /no spots remaining/i)).toBeInTheDocument();
   });
+
+  it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+    // 1. Render the Application
+    const { container } = render(<Application />);
+
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+
+     // 3 Click the delete button
+
+     // first find the Show component
+     const appointment = getAllByTestId(container, "appointment").find(
+      (appointment) => queryByText(appointment, "Archie Cohen")
+    );
+     // Click the Delete button on the Show component.
+     const deleteButton = queryByAltText(appointment, "Delete");
+     fireEvent.click(deleteButton);
+  });
+
 });
