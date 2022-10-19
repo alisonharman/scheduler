@@ -104,5 +104,11 @@ describe("Application", () => {
     await waitForElementToBeRemoved(() => queryByText(appointment, "Deleting..."));
     expect(getByAltText(appointment, "Add")).toBeInTheDocument();
 
+    // 8. Check that DayListItem component with the text "Monday" also has the text "2 spots remaining"
+    const day = getAllByTestId(container, "day").find((day) =>
+      queryByText(day, "Monday")
+    );
+    expect(getByText(day, /2 spots remaining/i)).toBeInTheDocument();
+
   });
 });
