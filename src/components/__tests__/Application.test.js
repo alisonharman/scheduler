@@ -179,5 +179,13 @@ describe("Application", () => {
     expect(
       getByText(appointment, /could not save appointment/i)
     ).toBeInTheDocument();
+
+    // 9. Click the close button
+    fireEvent.click(getByAltText(appointment, "Close"));
+
+    // 10. Check that the 'Create' element is displayed
+    expect(
+      getByPlaceholderText(appointment, /enter student name/i)
+    ).toBeInTheDocument();
   });
 });
