@@ -111,4 +111,19 @@ describe("Application", () => {
     expect(getByText(day, /2 spots remaining/i)).toBeInTheDocument();
 
   });
+
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+
+    // 1. Render the Application.
+    const { container } = render(<Application />);
+
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. click the "Edit" button on the first appointment
+    const appointment = getAllByTestId(container, "appointment").find(
+      (appointment) => queryByText(appointment, "Archie Cohen")
+    );
+    fireEvent.click(getByAltText(appointment, "Edit"));
+  });
 });
