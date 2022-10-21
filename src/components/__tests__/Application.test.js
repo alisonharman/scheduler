@@ -133,5 +133,16 @@ describe("Application", () => {
 
     // 6. Click the save button
     fireEvent.click(queryByText(appointment, "Save"));
+
+    // 7. Check that the 'Saving" element is displayed
+    expect(getByText(appointment, "Saving...")).toBeInTheDocument();
+
+    // 8. Check that the Show component is displayed and has the student "Archie Cohen" and interviewer ""
+    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
+    expect(getByText(appointment, "Sylvia Palmer")).toBeInTheDocument();
+    const day = getAllByTestId(container, "day").find((day) =>
+      queryByText(day, "Monday")
+    );
+    expect(getByText(day, /1 spot remaining/i)).toBeInTheDocument();
   });
 });
