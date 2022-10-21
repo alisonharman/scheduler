@@ -91,7 +91,9 @@ describe("Application", () => {
     fireEvent.click(deleteButton);
 
     // 4. Check that the Confirm component is shown.
-    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+    expect(
+      getByText(appointment, "Are you sure you would like to delete?")
+    ).toBeInTheDocument();
 
     // 5. Click the "Confirm" button on the Confirm component.
     const confirmButton = queryByText(appointment, "Confirm");
@@ -101,7 +103,9 @@ describe("Application", () => {
     expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
 
     // 7. Check that the Empty component (empty appointment element) is displayed
-    await waitForElementToBeRemoved(() => queryByText(appointment, "Deleting..."));
+    await waitForElementToBeRemoved(() =>
+      queryByText(appointment, "Deleting...")
+    );
     expect(getByAltText(appointment, "Add")).toBeInTheDocument();
 
     // 8. Check that DayListItem component with the text "Monday" also has the text "2 spots remaining"
@@ -109,11 +113,9 @@ describe("Application", () => {
       queryByText(day, "Monday")
     );
     expect(getByText(day, /2 spots remaining/i)).toBeInTheDocument();
-
   });
 
   it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
-
     // 1. Render the Application.
     const { container } = render(<Application />);
 
@@ -124,8 +126,8 @@ describe("Application", () => {
     const appointment = getAllByTestId(container, "appointment").find(
       (appointment) => queryByText(appointment, "Archie Cohen")
     );
- 
-  // 4. Click the edit button
+
+    // 4. Click the edit button
     fireEvent.click(getByAltText(appointment, "Edit"));
 
     // 5. Select (click) on the interviewer "Sylvia Palmer"
@@ -138,11 +140,44 @@ describe("Application", () => {
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
 
     // 8. Check that the Show component is displayed and has the student "Archie Cohen" and interviewer ""
-    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
+    await waitForElementToBeRemoved(() =>
+      queryByText(appointment, "Saving...")
+    );
     expect(getByText(appointment, "Sylvia Palmer")).toBeInTheDocument();
     const day = getAllByTestId(container, "day").find((day) =>
       queryByText(day, "Monday")
     );
     expect(getByText(day, /1 spot remaining/i)).toBeInTheDocument();
+  });
+  it("shows the save error when failing to save an appointment", async () => {
+    axios.put.mockRejectedValueOnce();
+
+    const { container } = render(<Application />);
+
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. click the "Edit" button on the first appointment
+    const appointment = getAllByTestId(container, "appointment").find(
+      (appointment) => queryByText(appointment, "Archie Cohen")
+    );
+    fireEvent.click(getByAltText(appointment, "Edit"));
+
+    // 4. Select the interviewer "Sylvia Palmer"
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+
+    // 6. Click the save button
+    fireEvent.click(queryByText(appointment, "Save"));
+
+    // 7. Check that the "Saving" element is displayed
+    expect(getByText(appointment, "Saving...")).toBeInTheDocument();
+
+    // 8. Wait for "Saving" element to be removed
+    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
+
+    // 9. Check that the Error component is displayed
+    expect(
+      getByText(appointment, /could not save appointment/i)
+    ).toBeInTheDocument();
   });
 });
