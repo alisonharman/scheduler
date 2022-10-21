@@ -124,6 +124,14 @@ describe("Application", () => {
     const appointment = getAllByTestId(container, "appointment").find(
       (appointment) => queryByText(appointment, "Archie Cohen")
     );
+ 
+  // 4. Click the edit button
     fireEvent.click(getByAltText(appointment, "Edit"));
+
+    // 5. Select (click) on the interviewer "Sylvia Palmer"
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+
+    // 6. Click the save button
+    fireEvent.click(queryByText(appointment, "Save"));
   });
 });
