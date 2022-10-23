@@ -188,4 +188,15 @@ describe("Application", () => {
       getByPlaceholderText(appointment, /enter student name/i)
     ).toBeInTheDocument();
   });
+  it("shows the delete error when failing to delete an existing appointment", async () => {
+    axios.delete.mockRejectedValueOnce();
+
+    // 1. Render the Application.
+    const { container } = render(<Application />);
+
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+
+  });
 });
