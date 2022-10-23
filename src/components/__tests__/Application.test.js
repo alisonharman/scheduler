@@ -213,17 +213,23 @@ describe("Application", () => {
     // 5. Click the "Confirm" button on the Confirm component.
     const confirmButton = queryByText(appointment, "Confirm");
     fireEvent.click(confirmButton);
-    // 7. Check that the "Deleting" element is displayed
+    // 6. Check that the "Deleting" element is displayed
     expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
 
-    // 8. Wait for "Deleting" element to be removed
+    // 7. Wait for "Deleting" element to be removed
     await waitForElementToBeRemoved(() =>
       queryByText(appointment, "Deleting...")
     );
 
-    // 9. Check that the Error component is displayed
+    // 8. Check that the Error component is displayed
     expect(
       getByText(appointment, /could not cancel appointment/i)
     ).toBeInTheDocument();
+
+     //9. Click the close button
+     fireEvent.click(getByAltText(appointment, "Close"));
+
+     // 10. Check that the 'Empty' appointment component is displayed
+     expect(queryByText(appointment, "Archie Cohen")).toBeInTheDocument();
   });
 });
